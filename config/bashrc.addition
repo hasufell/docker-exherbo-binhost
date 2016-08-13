@@ -1,0 +1,49 @@
+pbin_repo="/var/db/paludis/repositories/hasufell-binhost"
+distdir="/srv/binhost"
+backupdir="/backup"
+
+# update the pbin digests in ${pbin_repo}
+update_pbin_digest() {
+	local pkg
+	for pkg in $(cave print-packages -r hasufell-binhost); do
+		cave digest ${pkg} binhost
+	done
+}
+
+# rm all pbin digests from ${pbin_repo}
+rm_pbin_digests() {
+	rm -v "${pbin_repo}"/*/*/Manifest
+}
+
+# rm all pbins from ${pbin_repo}
+rm_all_pbins() {
+	rm -rv "${pbin_repo}"/*
+	git -C "${pbin_repo}" checkout -- profiles
+}
+
+# rm a given pbin "category/packagename" from ${pbin_repo}
+rm_pbin() {
+	local pbin=$1
+	rm -vr "${pbin_repo}"/"${pbin}"
+	rm -v "${distdir}"/hasufell-binhost--${pbin/\//--}-*
+}
+
+# remove binary tarballs from ${distdir}
+rm_distfiles() {
+	rm -v "${distdir}"/hasufell-binhost--*
+}
+
+# update the sha256sum.txt index in ${distdir}
+update_distfiles_shasum() {
+	(
+		cd "${distdir}" &&
+		rm sha256sum.txt &&
+		for i in * ; do
+			sha256sum ${i} >> sha256sum.txt
+		done
+	)
+}
+
+backup_distfiles() {
+	cp -a "${distdir}" "${backupdir}/binhost-$(date -u '+%Y-%m-%d-%H:%M:%S')"
+}
