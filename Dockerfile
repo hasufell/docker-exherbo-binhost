@@ -19,10 +19,13 @@ RUN chgrp paludisbuild /dev/tty && \
 	cave resolve -z -1 repository/virtualization -x && \
 	cave resolve -z -1 repository/CleverCloud -x && \
 	cave resolve -z -1 repository/philantrop -x && \
+	echo "dev-lang/go bootstrap" > /etc/paludis/options.conf.d/bootstrap.conf && \
 	cave update-world -s tools && \
 	cave update-world -s server && \
 	cave resolve -c world -x -f --permit-old-version '*/*' && \
 	cave resolve -c world -x --permit-old-version '*/*' && \
+	rm /etc/paludis/options.conf.d/bootstrap.conf && \
+	cave resolve -z -1 dev-lang/go -x && \
 	cave purge -x && \
 	cave fix-linkage -x && \
 	rm -rf /usr/portage/distfiles/* /srv/binhost/*
