@@ -17,6 +17,7 @@ RUN chgrp paludisbuild /dev/tty && \
 	cave sync && \
 	cave resolve -z -1 repository/spbecker -x && \
 	cave resolve -z -1 repository/virtualization -x && \
+	cave resolve -z -1 repository/CleverCloud -x && \
 	cave resolve -z -1 repository/philantrop -x && \
 	cave update-world -s tools && \
 	cave update-world -s server && \
