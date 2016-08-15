@@ -6,7 +6,7 @@ backupdir="/backup"
 update_pbin_digest() {
 	local pkg
 	for pkg in $(cave print-packages -r hasufell-binhost); do
-		cave digest ${pkg} binhost
+		cave digest ${pkg} hasufell-binhost
 	done
 }
 
